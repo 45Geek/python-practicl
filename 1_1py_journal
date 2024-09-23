@@ -1,0 +1,155 @@
+C:\sqlite3>sqlite3 company.db
+SQLite version 3.36.0 2021-06-18 18:36:39
+Enter ".help" for usage hints.
+sqlite> create table Department
+   ...> ();
+Error: near ")": syntax error
+sqlite> create table Department
+   ...> (
+   ...> dept_no int primary key,
+   ...> dept_name text,
+   ...> Location text
+   ...> );
+
+sqlite> insert into Department values(1,'Sales','Delhi');
+sqlite> insert into Department values(2,'Production','Mumbai');
+sqlite> insert into Department values(3,'IT','Hyderabad');
+sqlite> insert into Department values(4,'Marketing','Ahemdabad');
+sqlite> insert into Department values(5,'Analysis','Surat');
+sqlite> insert into Department values(6,'BCA','MP');
+sqlite> insert into Department values(7,'BBA','Baroda');
+
+sqlite> create table Employee
+   ...> (
+   ...> eid int primary key,
+   ...> emp_name text,
+   ...> gender text,
+   ...> dept_no int,
+   ...> address text,
+   ...> designation text,
+   ...> salary real,
+   ...> exprince int,
+   ...> email varchar(100) UNIQUE,
+   ...> foreign key(dept_no) references Department(dept_no)
+   ...> );
+
+sqlite> insert into Employee values(101,'Indrajeet','M',3,'Bardoli','Sr. Devloper',15000,5,'ipindra45@gmail.com');
+sqlite> insert into Employee values(102,'Ansu','M',2,'Surat','Sales_person',12000,2,'Ansu45@gmail.com');
+sqlite> insert into Employee values(103,'Lucky','M',1,'Baroda','Sales_person',10000,7,'Lucky45@gmail.com');
+sqlite> insert into Employee values(104,'Nidhi','F',3,'MP','Assistent',13000,6,'Nidhi45@gmail.com');
+sqlite> insert into Employee values(104,'Nidhi','F',3,'MP','Assistent',13000,6,'Nidhi45@gmail.com');
+sqlite> insert into Employee values(105,'Vibha','F',2,'Lucknow','Assistent',9000,1,'Vinbha45@gmail.com');
+sqlite> insert into Employee values(106,'Suraj','F',6,'Lucknow','Assistent',7000,1,'Suraj45@gmail.com');
+sqlite> insert into Employee values(107,'Akash','F',7,'Mumbai','Assistent',7000,1,'Akash45@gmail.com');
+
+
+C:\sqlite3>sqlite3 company.db .dump> com.sql
+
+C:\sqlite3>sqlite3 company.db
+SQLite version 3.36.0 2021-06-18 18:36:39
+Enter ".help" for usage hints.
+sqlite> .tables
+Department  Employee
+1.sqlite> select * from Department where Location='Surat';
+5|Analysis|Surat
+
+2.sqlite> Select * from Department where dept_name like 'A%';
+5|Analysis|Surat
+
+1.sqlite> select dept_name from Department where dept_no between 1 and 100;
+Sales
+Production
+IT
+Marketing
+Analysis
+BCA
+BBA
+
+2.sqlite> delete from Department where dept_name='TRG';
+
+3.sqlite> update Department set dept_name='IT' where dept_name='BBA';
+
+4.sqlite> update Department set location='Lucknow' where dept_name like '_a%';
+
+5.sqlite> Select * from Department where Location in('Bardoli','Surat','Ahemdabad');
+5|Analysis|Surat
+
+6.sqlite> Select * from Department where Location in('Bardoli','Surat','Ahemdabad');
+5|Analysis|Surat
+
+7.sqlite> select * from Employee where dept_no not in(select dept_no from department where dept_name in('Sales','Marketing'));
+101|Indrajeet|M|3|Bardoli|Sr. Devloper|15000.0|5|ipindra45@gmail.com
+102|Ansu|M|2|Surat|Sales_person|12000.0|2|Ansu45@gmail.com
+104|Nidhi|F|3|MP|Assistent|13000.0|6|Nidhi45@gmail.com
+105|Vibha|F|2|Lucknow|Assistent|9000.0|1|Vinbha45@gmail.com
+106|Suraj|F|6|Lucknow|Assistent|7000.0|1|Suraj45@gmail.com
+107|Akash|F|7|Mumbai|Assistent|7000.0|1|Akash45@gmail.com
+
+8.sqlite> select * from Department order by dept_name ASC;
+5|Analysis|Surat
+6|BCA|MP
+3|IT|Hyderabad
+7|IT|Baroda
+4|Marketing|Lucknow
+2|Production|Mumbai
+1|Sales|Lucknow
+
+8.sqlite> select * from Employee order by eid ASC;
+101|Indrajeet|M|3|Bardoli|Sr. Devloper|15000.0|5|ipindra45@gmail.com
+102|Ansu|M|2|Surat|Sales_person|12000.0|2|Ansu45@gmail.com
+103|Lucky|M|1|Baroda|Sales_person|10000.0|7|Lucky45@gmail.com
+104|Nidhi|F|3|MP|Assistent|13000.0|6|Nidhi45@gmail.com
+105|Vibha|F|2|Lucknow|Assistent|9000.0|1|Vinbha45@gmail.com
+106|Suraj|F|6|Lucknow|Assistent|7000.0|1|Suraj45@gmail.com
+107|Akash|F|7|Mumbai|Assistent|7000.0|1|Akash45@gmail.com
+
+9.sqlite> select * from Employee where gender='F';
+104|Nidhi|F|3|MP|Assistent|13000.0|6|Nidhi45@gmail.com
+105|Vibha|F|2|Lucknow|Assistent|9000.0|1|Vinbha45@gmail.com
+106|Suraj|F|6|Lucknow|Assistent|7000.0|1|Suraj45@gmail.com
+107|Akash|F|7|Mumbai|Assistent|7000.0|1|Akash45@gmail.com
+
+10.sqlite> select * from Employee order by emp_name ASC;
+107|Akash|F|7|Mumbai|Assistent|7000.0|1|Akash45@gmail.com
+102|Ansu|M|2|Surat|Sales_person|12000.0|2|Ansu45@gmail.com
+101|Indrajeet|M|3|Bardoli|Sr. Devloper|15000.0|5|ipindra45@gmail.com
+103|Lucky|M|1|Baroda|Sales_person|10000.0|7|Lucky45@gmail.com
+104|Nidhi|F|3|MP|Assistent|13000.0|6|Nidhi45@gmail.com
+106|Suraj|F|6|Lucknow|Assistent|7000.0|1|Suraj45@gmail.com
+105|Vibha|F|2|Lucknow|Assistent|9000.0|1|Vinbha45@gmail.com
+
+11.sqlite> select * from Employee where salary between 2000 and 5000;
+
+12.sqlite> select emp_name,designation from Employee where gender='f';
+
+13.sqlite> select emp_name,designation from Employee where gender='F' order by emp_name ASC;
+Akash|Assistent
+Nidhi|Assistent
+Suraj|Assistent
+Vibha|Assistent
+
+14.sqlite> select emp_name from Employee where emp_name like 'A%A';
+
+15.sqlite> select emp_name , salary from employee where salary=(select min(salary)from Employee);
+Suraj|7000.0
+Akash|7000.0
+
+16.sqlite> update Employee set salary=salary*1.10
+   ...> where dept_no=(select dept_no from Department where dept_name='IT');
+
+17.sqlite> select emp_name from Employee where exprince<1;
+
+18.sqlite> select d.dept_name,e.emp_name
+   ...> from Employee e
+   ...> join Department d on e.dept_no=d.dept_no
+   ...> where exprince>5
+   ...> order by D.dept_name;
+IT|Nidhi
+Sales|Lucky
+
+19.sqlite> select d.dept_no,e.dept_no from Department d
+   ...> left join Employee e on d.dept_no=e.dept_no
+   ...> where e.eid is null;
+4|
+5|
+20.sqlite> delete from Employee where salary <10000;
